@@ -17,8 +17,22 @@ but WITHOUT ANY WARRANTY.
 
 Renderer *g_Renderer = NULL;
 
-float x = 0, y = 0, z = 0;
-float dx = 0.02f, dy = 0.01f;
+class Rect {
+public:
+	float x, y, z;
+	float speed_x, speed_y, dir_x, dir_y;
+	float size;
+
+	Rect() {
+		x = 0.0f, y = 0.0f, z = 0.0f;
+		speed_x = 0.02f, speed_y = 0.03f;
+		dir_x = 1, dir_y = 1;
+		size = 40;
+	};
+
+};
+
+Rect ob;
 
 void RenderScene(void)
 {
@@ -27,13 +41,16 @@ void RenderScene(void)
 
 	// Renderer Test
 
-	x += dx, y += dy;
-	if (x > 230 || x < -230)
-		dx *= -1;
-	if (y > 230 || y < -230)
-		dy *= -1;
+	/*
+	ob.x += ob.dir_x * ob.speed_x, ob.y += ob.dir_y * ob.speed_y;
 
-	g_Renderer->DrawSolidRect(x, y, z, 40, 1, 0, 1, 1);
+	if (ob.x > 230 || ob.x < -230)
+		ob.dir_x *= -1;
+	if (ob.y > 230 || ob.y < -230)
+		ob.dir_y *= -1;
+	*/
+
+	g_Renderer->DrawSolidRect(ob.x, ob.y, ob.z, ob.size, 1, 0, 1, 1);
 
 	glutSwapBuffers();
 }
@@ -50,6 +67,23 @@ void MouseInput(int button, int state, int x, int y)
 
 void KeyInput(unsigned char key, int x, int y)
 {
+	if (key == 'w') {
+		if (ob.y < 230)
+		ob.y += 5;
+	}
+	if (key == 's') {
+		if (ob.y > -230)
+		ob.y -= 5;
+	}
+	if (key == 'a') {
+		if (ob.x > -230)
+			ob.x -= 5;
+	}
+	if (key == 'd') {
+		if (ob.x < 230)
+			ob.x += 5;
+	}
+
 	RenderScene();
 }
 
