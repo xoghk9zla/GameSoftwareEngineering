@@ -5,14 +5,15 @@
 
 class ScnMgr
 {
+private:
+	Renderer * m_Renderer;
+	Object *m_TestObj;
 public:
 	ScnMgr();
 	~ScnMgr();
 	
 	void RenderScene();
+	void Update();
 
-private:
-	Renderer * m_Renderer;
-	Object *m_TestObj;
 };
 

@@ -49,3 +49,21 @@ void Object::SetColor(float r, float g, float b, float a)
 	m_ColorB = b;
 	m_ColorA = a;
 }
+
+void Object::GetVel(float * x, float * y)
+{
+	*x = m_VelX;
+	*y = m_VelY;
+}
+
+void Object::SetVel(float x, float y)
+{
+	m_VelX = x;
+	m_VelY = y;
+}
+
+void Object::Update()
+{
+	m_PosX = m_PosX + m_VelX * (1.f / 60.f);
+	m_PosY = m_PosY + m_VelY * (1.f / 60.f);
+}

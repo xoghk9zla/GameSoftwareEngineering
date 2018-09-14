@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "ScnMgr.h"
 
-
 ScnMgr::ScnMgr()
 {	
 	m_Renderer = NULL;
@@ -13,8 +12,11 @@ ScnMgr::ScnMgr()
 	// Init Test Obj
 	m_TestObj = new Object();
 	m_TestObj->SetPos(0.0f, 0.0f);
-	m_TestObj->SetSize(40.0f, 40.0f);
+	m_TestObj->SetVel(0.f, 0.f);
+	m_TestObj->SetSize(1.0f, 1.0f);
 	m_TestObj->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+
 }
 
 ScnMgr::~ScnMgr()
@@ -42,6 +44,11 @@ void ScnMgr::RenderScene()
 	m_TestObj->GetSize(&sizeX, &sizeY);
 	m_TestObj->GetColor(&r, &g, &b, &a);
 
+	m_Renderer->DrawSolidRect(x, y, 0, sizeX * 100, sizeY * 100, r, g, b, a);
+}
 
-	m_Renderer->DrawSolidRect(x, y, 0, sizeX, r, g, b, a);
+void ScnMgr::Update()
+{
+	m_TestObj->Update();
+
 }

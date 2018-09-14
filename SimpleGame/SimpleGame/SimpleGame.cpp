@@ -19,6 +19,11 @@ but WITHOUT ANY WARRANTY.
 ScnMgr *g_ScnMgr = NULL;
 
 void RenderScene(void){
+
+	// Update
+	g_ScnMgr->Update();
+
+	// Render
 	g_ScnMgr->RenderScene();
 
 	glutSwapBuffers();

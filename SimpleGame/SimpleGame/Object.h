@@ -5,6 +5,7 @@ private:
 	float m_PosX, m_PosY;
 	float m_SizeW, m_SizeH;
 	float m_ColorR, m_ColorG, m_ColorB, m_ColorA;
+	float m_VelX, m_VelY;
 
 public:
 	Object();
@@ -16,6 +17,10 @@ public:
 	void SetSize(float w, float h);
 	void GetColor(float *r, float *g, float *b, float *a);
 	void SetColor(float r, float g, float b, float a);
+	void GetVel(float *x, float *y);
+	void SetVel(float x, float y);
+
+	void Update();
 	
 };
 
