@@ -12,13 +12,13 @@ ScnMgr::ScnMgr()
 	// Init Test Obj
 	m_TestObj = new Object();
 	m_TestObj->SetPos(0.0f, 0.0f);
-	m_TestObj->SetVel(0.f, 0.f);
+	m_TestObj->SetVel(0.0f, 1.0f);
+	m_TestObj->SetAcc(0.0f, -0.2f);
 	m_TestObj->SetSize(1.0f, 1.0f);
 	m_TestObj->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 
-
 }
-
+	
 ScnMgr::~ScnMgr()
 {
 	if (m_Renderer) {
@@ -47,8 +47,7 @@ void ScnMgr::RenderScene()
 	m_Renderer->DrawSolidRect(x, y, 0, sizeX * 100, sizeY * 100, r, g, b, a);
 }
 
-void ScnMgr::Update()
+void ScnMgr::Update(float eTime)
 {
-	m_TestObj->Update();
-
+	m_TestObj->Update(eTime);
 }

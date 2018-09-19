@@ -12,16 +12,29 @@ but WITHOUT ANY WARRANTY.
 
 #include "stdafx.h"
 #include <iostream>
+#include <windows.h>
 #include "Dependencies\glew.h"
 #include "Dependencies\freeglut.h"
 #include "ScnMgr.h"
 
 ScnMgr *g_ScnMgr = NULL;
 
+DWORD g_PrevTime =0;
+
 void RenderScene(void){
 
+	// Calc Elapsed Time
+	if (g_PrevTime == 0) {
+		g_PrevTime = GetTickCount();
+		return;
+	}
+	DWORD CurTime = GetTickCount();
+	DWORD ElapsedTime = CurTime - g_PrevTime;
+	g_PrevTime = CurTime;
+	float eTime = (float)ElapsedTime / 1000.0f;
+	std::cout << eTime << std::endl;
 	// Update
-	g_ScnMgr->Update();
+	g_ScnMgr->Update(eTime);
 
 	// Render
 	g_ScnMgr->RenderScene();

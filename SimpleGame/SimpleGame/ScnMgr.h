@@ -13,7 +13,6 @@ public:
 	~ScnMgr();
 	
 	void RenderScene();
-	void Update();
-
+	void Update(float eTime);
 };
 

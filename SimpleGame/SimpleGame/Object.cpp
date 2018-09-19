@@ -62,8 +62,25 @@ void Object::SetVel(float x, float y)
 	m_VelY = y;
 }
 
-void Object::Update()
+void Object::GetAcc(float * x, float * y)
 {
-	m_PosX = m_PosX + m_VelX * (1.f / 60.f);
-	m_PosY = m_PosY + m_VelY * (1.f / 60.f);
+	*x = m_AccX;
+	*y = m_AccY;
+}
+
+void Object::SetAcc(float x, float y)
+{
+	m_AccX = x;
+	m_AccY = y;
+}
+
+void Object::Update(float eTime)
+{
+	// Cal Velocity
+	m_VelX = m_VelX + m_AccX * eTime;
+	m_VelY = m_VelY + m_AccY * eTime;
+
+	// Cal Position
+	m_PosX = m_PosX + m_VelX * eTime;
+	m_PosY = m_PosY + m_VelY * eTime;
 }
