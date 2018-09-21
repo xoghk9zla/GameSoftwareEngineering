@@ -11,10 +11,11 @@ ScnMgr::ScnMgr()
 
 	// Init Test Obj
 	m_TestObj = new Object();
-	m_TestObj->SetPos(0.0f, 0.0f);
-	m_TestObj->SetVel(0.0f, 1.0f);
-	m_TestObj->SetAcc(0.0f, -0.2f);
+	m_TestObj->SetPos(0.0f, 0.0f);	
+	m_TestObj->SetVel(0.0f, 0.0f);
+	m_TestObj->SetAcc(0.0f, 0.0f);
 	m_TestObj->SetSize(1.0f, 1.0f);
+	m_TestObj->SetMass(1.0f);
 	m_TestObj->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 
 }
@@ -50,4 +51,9 @@ void ScnMgr::RenderScene()
 void ScnMgr::Update(float eTime)
 {
 	m_TestObj->Update(eTime);
+}
+
+void ScnMgr::ApplyForce(float x, float y, float eTime)
+{
+	m_TestObj->ApplyForce(x, y, eTime);
 }

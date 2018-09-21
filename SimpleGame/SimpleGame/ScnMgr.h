@@ -14,5 +14,6 @@ public:
 	
 	void RenderScene();
 	void Update(float eTime);
+	void ApplyForce(float x, float y, float eTime);
 };
 

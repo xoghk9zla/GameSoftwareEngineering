@@ -19,9 +19,17 @@ but WITHOUT ANY WARRANTY.
 
 ScnMgr *g_ScnMgr = NULL;
 
-DWORD g_PrevTime =0;
+DWORD g_PrevTime = 0;
+
+BOOL g_KeyW = FALSE;
+BOOL g_KeyA = FALSE;
+BOOL g_KeyS = FALSE;	
+BOOL g_KeyD = FALSE;
 
 void RenderScene(void){
+
+	// 키입력 테스트
+	std::cout << "w: " << g_KeyW << ", a: " << g_KeyA << ", s: " << g_KeyS << ", d: " << g_KeyD << std::endl;
 
 	// Calc Elapsed Time
 	if (g_PrevTime == 0) {
@@ -32,7 +40,28 @@ void RenderScene(void){
 	DWORD ElapsedTime = CurTime - g_PrevTime;
 	g_PrevTime = CurTime;
 	float eTime = (float)ElapsedTime / 1000.0f;
-	std::cout << eTime << std::endl;
+	// std::cout << eTime << std::endl;
+	
+	// Apply Force
+	float forceX = 0.0f;
+	float forceY = 0.0f;
+
+	if (g_KeyW) {
+		forceY += 1.0f;
+	}
+	if (g_KeyS) {
+		forceY -= 1.0f;
+	}
+	if (g_KeyA) {
+		forceX -= 1.0f;
+	}
+	if (g_KeyW) {
+		forceX += 1.0f;
+	}
+
+	g_ScnMgr->ApplyForce(forceX, forceY, eTime);
+
+
 	// Update
 	g_ScnMgr->Update(eTime);
 
@@ -43,42 +72,47 @@ void RenderScene(void){
 }
 
 void Idle(void){
-	RenderScene();
+	RenderScene(); 
 }
 
 void MouseInput(int button, int state, int x, int y){
 	RenderScene();
 }
 
-void KeyInput(unsigned char key, int x, int y){
-	/*if (key == 'w') {
-		float x, y;
-		g_TestObj->GetPos(&x, &y);
-			y += 5;
-		g_TestObj->SetPos(x, y);
+void KeyDownInput(unsigned char key, int x, int y){
+	if (key == 'w') {
+		g_KeyW = TRUE;
 	}
 	if (key == 's') {
-		float x, y;
-		g_TestObj->GetPos(&x, &y);
-			y -= 5;
-		g_TestObj->SetPos(x, y);
+		g_KeyS = TRUE;
 	}
 	if (key == 'a') {
-		float x, y;
-		g_TestObj->GetPos(&x, &y);
-			x -= 5;
-		g_TestObj->SetPos(x, y);
+		g_KeyA = TRUE;
 	}
 	if (key == 'd') {
-		float x, y;
-		g_TestObj->GetPos(&x, &y);
-			x += 5;
-		g_TestObj->SetPos(x, y);
+		g_KeyD = TRUE;
 	}
-*/
-	RenderScene();
+}
+
+void KeyUpInput(unsigned char key, int x, int y) {
+	if (key == 'w') {
+		g_KeyW = FALSE;
+	}
+	if (key == 's') {
+		g_KeyS = FALSE;
+	}
+	if (key == 'a') {
+		g_KeyA = FALSE;
+	}
+	if (key == 'd') {
+		g_KeyD = FALSE;
+	}
+}
+
+void SetKeyRepeat() {
 
 }
+
 
 void SpecialKeyInput(int key, int x, int y){
 	RenderScene();
@@ -105,7 +139,8 @@ int main(int argc, char **argv){
 
 	glutDisplayFunc(RenderScene);
 	glutIdleFunc(Idle);
-	glutKeyboardFunc(KeyInput);
+	glutKeyboardFunc(KeyDownInput);
+	glutKeyboardUpFunc(KeyUpInput);
 	glutMouseFunc(MouseInput);
 	glutSpecialFunc(SpecialKeyInput);
 

@@ -74,6 +74,16 @@ void Object::SetAcc(float x, float y)
 	m_AccY = y;
 }
 
+void Object::GetMass(float * x)
+{
+	*x = m_Mass;
+}
+
+void Object::SetMass(float x)
+{
+	m_Mass = x;
+}
+
 void Object::Update(float eTime)
 {
 	// Cal Velocity
@@ -83,4 +93,17 @@ void Object::Update(float eTime)
 	// Cal Position
 	m_PosX = m_PosX + m_VelX * eTime;
 	m_PosY = m_PosY + m_VelY * eTime;
+}
+
+void Object::ApplyForce(float x, float y, float eTime)
+{
+	//Calc Acc a = f/m
+	m_AccX = x / m_Mass;
+	m_AccY = y / m_Mass;
+
+	m_VelX = m_VelX + m_AccX * eTime;
+	m_VelY = m_VelY + m_AccY * eTime;
+
+	m_AccX = 0.0f;
+	m_AccY = 0.0f;
 }

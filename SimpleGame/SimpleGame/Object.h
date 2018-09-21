@@ -7,6 +7,7 @@ private:
 	float m_ColorR, m_ColorG, m_ColorB, m_ColorA;
 	float m_VelX, m_VelY;
 	float m_AccX, m_AccY;
+	float m_Mass;
 
 public:
 	Object();
@@ -27,7 +28,12 @@ public:
 	void GetAcc(float *x, float *y);
 	void SetAcc(float x, float y);
 
+	void GetMass(float *x);
+	void SetMass(float x);
+
 	void Update(float eTime);
+
+	void ApplyForce(float x, float y, float eTime);
 	
 };
 
