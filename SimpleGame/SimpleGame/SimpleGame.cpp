@@ -40,7 +40,10 @@ void RenderScene(void){
 	DWORD ElapsedTime = CurTime - g_PrevTime;
 	g_PrevTime = CurTime;
 	float eTime = (float)ElapsedTime / 1000.0f;
-	// std::cout << eTime << std::endl;
+	if (eTime <= 0) {
+		eTime = 0.015f;
+	}
+	 //std::cout << eTime << std::endl;
 	
 	// Apply Force
 	float forceX = 0.0f;
@@ -55,7 +58,7 @@ void RenderScene(void){
 	if (g_KeyA) {
 		forceX -= 1.0f;
 	}
-	if (g_KeyW) {
+	if (g_KeyD) {
 		forceX += 1.0f;
 	}
 
