@@ -9,6 +9,9 @@ ScnMgr::ScnMgr()
 	// Init Renderer
 	m_Renderer = new Renderer(WIDTH, HEIGHT);
 
+	// Load test Texture
+	m_TestTexture = m_Renderer->CreatePngTexture("./textures/texture.png");
+
 	// Init Test Obj
 	m_TestObj = new Object();
 	m_TestObj->SetPos(0.0f, 0.0f);	
@@ -46,7 +49,9 @@ void ScnMgr::RenderScene()
 	m_TestObj->GetSize(&sizeX, &sizeY);
 	m_TestObj->GetColor(&r, &g, &b, &a);
 
-	m_Renderer->DrawSolidRect(x, y, 0, sizeX * 100, sizeY * 100, r, g, b, a);
+	//m_Renderer->DrawSolidRect(x, y, 0, sizeX * 100, sizeY * 100, r, g, b, a);
+	m_Renderer->DrawTextureRect(x, y, 0, sizeX * 100, sizeY * 100, r, g, b, a, 1);
+
 }
 
 void ScnMgr::Update(float eTime)

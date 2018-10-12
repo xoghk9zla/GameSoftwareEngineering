@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "Renderer.h"
+#include "LoadPng.h"
+#include <Windows.h>
+#include <cstdlib>
 
 Renderer::Renderer(int windowSizeX, int windowSizeY)
 {
@@ -19,6 +22,7 @@ void Renderer::Initialize(int windowSizeX, int windowSizeY)
 
 	//Load shaders
 	m_SolidRectShader = CompileShaders("./Shaders/SolidRect.vs", "./Shaders/SolidRect.fs");
+	m_TextureRectShader = CompileShaders("./Shaders/TextureRect.vs", "./Shaders/TextureRect.fs");
 	
 	//Create VBOs
 	CreateVertexBufferObjects();
@@ -39,13 +43,56 @@ void Renderer::CreateVertexBufferObjects()
 	float rect[]
 		=
 	{
-		-1.f / m_WindowSizeX, -1.f / m_WindowSizeY, 0.f, -1.f / m_WindowSizeX, 1.f / m_WindowSizeY, 0.f, 1.f / m_WindowSizeX, 1.f / m_WindowSizeY, 0.f, //Triangle1
-		-1.f / m_WindowSizeX, -1.f / m_WindowSizeY, 0.f,  1.f / m_WindowSizeX, 1.f / m_WindowSizeY, 0.f, 1.f / m_WindowSizeX, -1.f / m_WindowSizeY, 0.f, //Triangle2
+		-1.f / m_WindowSizeX, -1.f / m_WindowSizeY, 0.f, 
+		-1.f / m_WindowSizeX, 1.f / m_WindowSizeY, 0.f, 
+		1.f / m_WindowSizeX, 1.f / m_WindowSizeY, 0.f, //Triangle1
+		-1.f / m_WindowSizeX, -1.f / m_WindowSizeY, 0.f,  
+		1.f / m_WindowSizeX, 1.f / m_WindowSizeY, 0.f, 
+		1.f / m_WindowSizeX, -1.f / m_WindowSizeY, 0.f, //Triangle2
 	};
 
 	glGenBuffers(1, &m_VBORect);
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBORect);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(rect), rect, GL_STATIC_DRAW);
+
+	float texRect[]
+		=
+	{
+		-1.f / m_WindowSizeX, -1.f / m_WindowSizeY, 0.f, 0.f, 0.f,
+		-1.f / m_WindowSizeX, 1.f / m_WindowSizeY, 0.f, 0.f, 1.f,
+		1.f / m_WindowSizeX, 1.f / m_WindowSizeY, 0.f, 1.f, 1.f,//Triangle1
+		-1.f / m_WindowSizeX, -1.f / m_WindowSizeY, 0.f, 0.f, 0.f,
+		1.f / m_WindowSizeX, 1.f / m_WindowSizeY, 0.f, 1.f, 1.f,
+		1.f / m_WindowSizeX, -1.f / m_WindowSizeY, 0.f, 1.f, 0.f//Triangle2
+	};
+
+	glGenBuffers(1, &m_VBOTexRect);
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBOTexRect);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(texRect), texRect, GL_STATIC_DRAW);
+}
+
+GLuint Renderer::CreatePngTexture(char * filePath)
+{
+	GLuint temp;
+	glGenTextures(1, &temp);
+
+	//Load Pngs
+	// Load file and decode image.
+	std::vector<unsigned char> image;
+	unsigned width, height;
+	unsigned error = lodepng::decode(image, width, height, filePath);
+
+	glBindTexture(GL_TEXTURE_2D, temp);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, &image[0]);
+
+	return temp;
+}
+
+void Renderer::DeleteTexture(GLuint texID)
+{
+	glDeleteTextures(1, &texID);
 }
 
 void Renderer::AddShader(GLuint ShaderProgram, const char* pShaderText, GLenum ShaderType)
@@ -153,7 +200,7 @@ GLuint Renderer::CompileShaders(char* filenameVS, char* filenameFS)
 	}
 
 	glUseProgram(ShaderProgram);
-	std::cout << filenameVS << ", " << filenameFS << " Shader compiling is done.";
+	std::cout << filenameVS << ", " << filenameFS << " Shader compiling is done.\n";
 
 	return ShaderProgram;
 }
@@ -178,8 +225,44 @@ void Renderer::DrawSolidRect(float x, float y, float z, float sizeX, float sizeY
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
 	glDisableVertexAttribArray(attribPosition);
+}
 
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+void Renderer::DrawTextureRect(float x, float y, float z, float sizeX, float sizeY, float r, float g, float b, float a, GLuint texID)
+{
+	float newX, newY;
+
+	GetGLPosition(x, y, &newX, &newY);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	//Program select
+	glUseProgram(m_TextureRectShader);
+
+	glUniform4f(glGetUniformLocation(m_TextureRectShader, "u_Trans"), newX, newY, sizeX, sizeY);
+	glUniform4f(glGetUniformLocation(m_TextureRectShader, "u_Color"), r, g, b, a);
+	int texUniform = glGetUniformLocation(m_TextureRectShader, "u_Texture");
+	glUniform1i(texUniform, 0);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texID);
+
+	int attribPosition = glGetAttribLocation(m_TextureRectShader, "a_Position");
+	int attribTexture = glGetAttribLocation(m_TextureRectShader, "a_TexPos");
+
+	glEnableVertexAttribArray(attribPosition);
+	glEnableVertexAttribArray(attribTexture);
+
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBOTexRect);
+	glVertexAttribPointer(attribPosition, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, 0);
+	glVertexAttribPointer(attribTexture, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (GLvoid*)(3 * sizeof(float)));
+
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	glDisableVertexAttribArray(attribPosition);
+	glDisableVertexAttribArray(attribTexture);
+
+	glDisable(GL_BLEND);
 }
 
 void Renderer::GetGLPosition(float x, float y, float *newX, float *newY)

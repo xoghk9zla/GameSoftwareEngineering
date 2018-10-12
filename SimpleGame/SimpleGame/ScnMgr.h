@@ -8,6 +8,8 @@ class ScnMgr
 private:
 	Renderer * m_Renderer;
 	Object *m_TestObj;
+
+	GLuint m_TestTexture;
 public:
 	ScnMgr();
 	~ScnMgr();

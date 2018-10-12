@@ -15,6 +15,9 @@ public:
 
 	bool IsInitialized();
 	void DrawSolidRect(float x, float y, float z, float sizeX, float sizeY, float r, float g, float b, float a);
+	void DrawTextureRect(float x, float y, float z, float sizeX, float sizeY, float r, float g, float b, float a, GLuint texID);
+	GLuint CreatePngTexture(char * filePath);
+	void DeleteTexture(GLuint texID);
 
 private:
 	void Initialize(int windowSizeX, int windowSizeY);
@@ -31,5 +34,8 @@ private:
 
 	GLuint m_VBORect = 0;
 	GLuint m_SolidRectShader = 0;
+
+	GLuint m_VBOTexRect = 0;
+	GLuint m_TextureRectShader = 0;
 };
 
