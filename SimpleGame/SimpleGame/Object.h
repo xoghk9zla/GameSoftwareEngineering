@@ -8,6 +8,7 @@ private:
 	float m_VelX, m_VelY;
 	float m_AccX, m_AccY;
 	float m_Mass;
+	float m_CoefFrict;
 
 public:
 	Object();
@@ -30,6 +31,9 @@ public:
 
 	void GetMass(float *x);
 	void SetMass(float x);
+
+	void GetCoefFrict(float *x);
+	void SetCoefFrict(float x);
 
 	void Update(float eTime);
 

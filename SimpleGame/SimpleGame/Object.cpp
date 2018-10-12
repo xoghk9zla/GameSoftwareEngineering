@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Object.h"
-
+#include <math.h>
+#include <float.h>
 
 Object::Object(){
 	
@@ -84,8 +85,55 @@ void Object::SetMass(float x)
 	m_Mass = x;
 }
 
+void Object::GetCoefFrict(float * x)
+{
+	*x = m_CoefFrict;
+}
+
+void Object::SetCoefFrict(float x)
+{
+	m_CoefFrict = x;
+}
+
 void Object::Update(float eTime)
 {
+	float magvel = sqrtf(m_VelX * m_VelX + m_VelY * m_VelY);
+	float velx = m_VelX / magvel;
+	float vely = m_VelY / magvel;
+	float fricX = -velx;
+	float fricY = -vely;
+	float friction = m_CoefFrict * m_Mass * 9.8f;
+
+	fricX *= friction;
+	fricY *= friction;
+
+	if(magvel < FLT_EPSILON){
+		m_VelX = 0.0f;
+		m_VelY = 0.0f;
+	}
+	else {
+		float accx = fricX / m_Mass;
+		float accy = fricY / m_Mass;
+
+		float aftervelx = m_VelX + accx * eTime;
+		float aftervely = m_VelY + accy * eTime;
+
+		if (aftervelx * m_VelX < 0.0f) {
+			m_VelX = 0.0f;
+		}
+		else {
+			m_VelX = aftervelx;
+		}
+
+		if (aftervely * m_VelY < 0.0f) {
+			m_VelY = 0.0f;
+		}
+		else {
+			m_VelY = aftervely;
+		}
+
+	}
+
 	// Cal Velocity
 	m_VelX = m_VelX + m_AccX * eTime;
 	m_VelY = m_VelY + m_AccY * eTime;

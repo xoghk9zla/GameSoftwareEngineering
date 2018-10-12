@@ -15,7 +15,8 @@ ScnMgr::ScnMgr()
 	m_TestObj->SetVel(0.0f, 0.0f);
 	m_TestObj->SetAcc(0.0f, 0.0f);
 	m_TestObj->SetSize(1.0f, 1.0f);
-	m_TestObj->SetMass(1.0f);
+	m_TestObj->SetMass(0.1f);
+	m_TestObj->SetCoefFrict(1.0f);
 	m_TestObj->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 
 }
