@@ -2,7 +2,7 @@
 class Object
 {
 private:
-	float m_PosX, m_PosY;
+	float m_PosX, m_PosY, m_PosZ;
 	float m_SizeW, m_SizeH;
 	float m_ColorR, m_ColorG, m_ColorB, m_ColorA;
 	float m_VelX, m_VelY;
@@ -14,8 +14,8 @@ public:
 	Object();
 	~Object();
 
-	void GetPos(float *x, float *y);
-	void SetPos(float x, float y);
+	void GetPos(float *x, float *y, float* z);
+	void SetPos(float x, float y, float z);
 
 	void GetSize(float *w, float *h);
 	void SetSize(float w, float h);

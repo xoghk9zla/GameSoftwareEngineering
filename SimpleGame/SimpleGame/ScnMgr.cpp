@@ -14,7 +14,7 @@ ScnMgr::ScnMgr()
 
 	// Init Test Obj
 	m_TestObj = new Object();
-	m_TestObj->SetPos(0.0f, 0.0f);	
+	m_TestObj->SetPos(0.0f, 0.0f, 0.0f);	
 	m_TestObj->SetVel(0.0f, 0.0f);
 	m_TestObj->SetAcc(0.0f, 0.0f);
 	m_TestObj->SetSize(1.0f, 1.0f);
@@ -44,13 +44,11 @@ void ScnMgr::RenderScene()
 
 	// Renderer Test
 
-	float x, y, sizeX, sizeY, r, g, b, a;
-	m_TestObj->GetPos(&x, &y);
+	float x, y, z, sizeX, sizeY, r, g, b, a;
+	m_TestObj->GetPos(&x, &y, &z);
 	m_TestObj->GetSize(&sizeX, &sizeY);
 	m_TestObj->GetColor(&r, &g, &b, &a);
-
-	//m_Renderer->DrawSolidRect(x, y, 0, sizeX * 100, sizeY * 100, r, g, b, a);
-	m_Renderer->DrawTextureRect(x, y, 0, sizeX * 100, sizeY * 100, r, g, b, a, 1);
+	m_Renderer->DrawTextureRectHeight(x, y, 0.0f, sizeX * 100, sizeY * 100, r, g, b, a, m_TestTexture, z);
 
 }
 

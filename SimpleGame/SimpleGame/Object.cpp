@@ -11,16 +11,18 @@ Object::~Object()
 {
 }
 
-void Object::GetPos(float * x, float * y)
+void Object::GetPos(float * x, float * y, float * z)
 {
 	*x = m_PosX;
 	*y = m_PosY;
+	*z = m_PosZ;
 }
 
-void Object::SetPos(float x, float y)
+void Object::SetPos(float x, float y, float z)
 {
 	m_PosX = x;
 	m_PosY = y;
+	m_PosZ = z;
 }
 
 void Object::GetSize(float * w, float * h)
