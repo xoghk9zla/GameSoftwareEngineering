@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "ScnMgr.h"
 
+int g_Seq = 0;
+
 ScnMgr::ScnMgr()
 {	
 	m_Renderer = NULL;
@@ -10,7 +12,8 @@ ScnMgr::ScnMgr()
 	m_Renderer = new Renderer(WIDTH, HEIGHT);
 
 	// Load test Texture
-	m_TestTexture = m_Renderer->CreatePngTexture("./textures/texture.png");
+	//m_TestTexture = m_Renderer->CreatePngTexture("./textures/textures.png");
+	m_TexSeq = m_Renderer->CreatePngTexture("./textures/sprite.png");
 
 	// Init Test Obj
 	m_TestObj = new Object();
@@ -48,7 +51,18 @@ void ScnMgr::RenderScene()
 	m_TestObj->GetPos(&x, &y, &z);
 	m_TestObj->GetSize(&sizeX, &sizeY);
 	m_TestObj->GetColor(&r, &g, &b, &a);
-	m_Renderer->DrawTextureRectHeight(x, y, 0.0f, sizeX * 100, sizeY * 100, r, g, b, a, m_TestTexture, z);
+	//m_Renderer->DrawTextureRectHeight(x, y, 0.0f, sizeX * 100, sizeY * 100, r, g, b, a, m_TestTexture, z);
+
+	int seqX, seqY;
+
+	seqX = g_Seq % 4;
+	seqY = (int)g_Seq / 2;
+	g_Seq++;
+
+	if (g_Seq > 7) {
+		g_Seq = 0;
+	}
+	m_Renderer->DrawTextureRectSeqXY(x, y, 0.0f, sizeX * 100, sizeY * 100, r, g, b, a, m_TexSeq, seqX, seqY, 4, 2);
 
 }
 

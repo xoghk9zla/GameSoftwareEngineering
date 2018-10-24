@@ -10,6 +10,7 @@ private:
 	Object *m_TestObj;
 
 	GLuint m_TestTexture;
+	GLuint m_TexSeq;
 public:
 	ScnMgr();
 	~ScnMgr();
