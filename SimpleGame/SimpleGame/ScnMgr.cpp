@@ -5,25 +5,32 @@ int g_Seq = 0;
 
 ScnMgr::ScnMgr()
 {	
+	// Init Objects List
+	for (int i = 0; i < MAX_OBJECTS; ++i) {
+		m_Objects[i] = NULL;
+	}
+
+	// Creat Hero Object
+	m_Objects[HERO_ID] = new Object();
+	m_Objects[HERO_ID]->SetPos(0.0f, 0.0f, 0.0f);
+	m_Objects[HERO_ID]->SetVel(0.0f, 0.0f);
+	m_Objects[HERO_ID]->SetAcc(0.0f, 0.0f);
+	m_Objects[HERO_ID]->SetSize(1.0f, 1.0f);
+	m_Objects[HERO_ID]->SetMass(0.1f);
+	m_Objects[HERO_ID]->SetCoefFrict(1.0f);
+	m_Objects[HERO_ID]->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
+	m_Objects[HERO_ID]->SetKind(KIND_HERO);
+
+
 	m_Renderer = NULL;
-	m_TestObj = NULL;
+	m_Objects[HERO_ID] = NULL;
 
 	// Init Renderer
 	m_Renderer = new Renderer(WIDTH, HEIGHT);
 
 	// Load test Texture
-	//m_TestTexture = m_Renderer->CreatePngTexture("./textures/textures.png");
 	m_TexSeq = m_Renderer->CreatePngTexture("./textures/sprite.png");
-
-	// Init Test Obj
-	m_TestObj = new Object();
-	m_TestObj->SetPos(0.0f, 0.0f, 0.0f);	
-	m_TestObj->SetVel(0.0f, 0.0f);
-	m_TestObj->SetAcc(0.0f, 0.0f);
-	m_TestObj->SetSize(1.0f, 1.0f);
-	m_TestObj->SetMass(0.1f);
-	m_TestObj->SetCoefFrict(1.0f);
-	m_TestObj->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
+	//m_TestTexture = m_Renderer->CreatePngTexture("./textures/textures.png");
 
 }
 	
@@ -34,9 +41,9 @@ ScnMgr::~ScnMgr()
 		m_Renderer = NULL;
 	}
 
-	if (m_TestObj) {
-		delete m_TestObj;
-		m_TestObj = NULL;
+	if (m_Objects[HERO_ID]) {
+		delete m_Objects[HERO_ID];
+		m_Objects[HERO_ID] = NULL;
 	}
 }
 
@@ -48,9 +55,9 @@ void ScnMgr::RenderScene()
 	// Renderer Test
 
 	float x, y, z, sizeX, sizeY, r, g, b, a;
-	m_TestObj->GetPos(&x, &y, &z);
-	m_TestObj->GetSize(&sizeX, &sizeY);
-	m_TestObj->GetColor(&r, &g, &b, &a);
+	m_Objects[HERO_ID]->GetPos(&x, &y, &z);
+	m_Objects[HERO_ID]->GetSize(&sizeX, &sizeY);
+	m_Objects[HERO_ID]->GetColor(&r, &g, &b, &a);
 	//m_Renderer->DrawTextureRectHeight(x, y, 0.0f, sizeX * 100, sizeY * 100, r, g, b, a, m_TestTexture, z);
 
 	int seqX, seqY;
@@ -68,10 +75,51 @@ void ScnMgr::RenderScene()
 
 void ScnMgr::Update(float eTime)
 {
-	m_TestObj->Update(eTime);
+	m_Objects[HERO_ID]->Update(eTime);
 }
 
 void ScnMgr::ApplyForce(float x, float y, float eTime)
 {
-	m_TestObj->ApplyForce(x, y, eTime);
+	m_Objects[HERO_ID]->ApplyForce(x, y, eTime);
+}
+
+void ScnMgr::Shoot(int shootID)
+{
+	float amount = 3.0f;
+	float bvX, bvY;
+
+	if (shootID == SHOOT_NONE) {
+		return;
+	}
+
+	bvX = 0.0f;
+	bvY = 0.0f;
+
+	switch (shootID)
+	{
+	case SHOOT_UP:
+		bvX = 0.0f;
+		bvY = amount;
+		break;
+	case SHOOT_DOWN:
+		bvX = 0.0f;
+		bvY = -amount;
+		break;
+	case SHOOT_LEFT:
+		bvX = -amount;
+		bvY = 0.0f;
+		break;
+	case SHOOT_RIGHT:
+		bvX = amount;
+		bvY = 0.0f;
+		break;
+
+	default:
+		break;
+	}
+
+	float pX, pY, pZ;
+
+	float vX, vY;
+
 }

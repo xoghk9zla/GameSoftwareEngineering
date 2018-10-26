@@ -15,6 +15,7 @@ but WITHOUT ANY WARRANTY.
 #include <windows.h>
 #include "Dependencies\glew.h"
 #include "Dependencies\freeglut.h"
+#include "Global.h"
 #include "ScnMgr.h"
 
 ScnMgr *g_ScnMgr = NULL;
@@ -25,6 +26,8 @@ BOOL g_KeyW = FALSE;
 BOOL g_KeyA = FALSE;
 BOOL g_KeyS = FALSE;	
 BOOL g_KeyD = FALSE;
+
+int g_Shoot = SHOOT_NONE;
 
 void RenderScene(void){
 
@@ -70,6 +73,8 @@ void RenderScene(void){
 
 	// Render
 	g_ScnMgr->RenderScene();
+
+	g_ScnMgr->Shoot(g_Shoot);
 
 	glutSwapBuffers();
 }
@@ -117,8 +122,30 @@ void SetKeyRepeat() {
 }
 
 
-void SpecialKeyInput(int key, int x, int y){
-	RenderScene();
+void SpecialKeyDownInput(int key, int x, int y){
+
+	switch (key)
+	{
+	case GLUT_KEY_UP:
+		g_Shoot = SHOOT_UP;
+		break;
+	case GLUT_KEY_DOWN:
+		g_Shoot = SHOOT_DOWN;
+		break;
+	case GLUT_KEY_LEFT:
+		g_Shoot = SHOOT_LEFT;
+		break;
+	case GLUT_KEY_RIGHT:
+		g_Shoot = SHOOT_RIGHT;
+		break;
+	default:
+		break;
+	}
+
+}
+
+void SpecialKeyUpInput(int key, int x, int y) {
+	g_Shoot = SHOOT_NONE;
 }
 
 int main(int argc, char **argv){
@@ -145,8 +172,10 @@ int main(int argc, char **argv){
 	glutKeyboardFunc(KeyDownInput);
 	glutKeyboardUpFunc(KeyUpInput);
 	glutMouseFunc(MouseInput);
-	glutSpecialFunc(SpecialKeyInput);
+	glutSpecialFunc(SpecialKeyDownInput);
+	glutSpecialUpFunc(SpecialKeyUpInput);
 
+	glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
 	// Init ScnMgr
 	g_ScnMgr = new ScnMgr();
 

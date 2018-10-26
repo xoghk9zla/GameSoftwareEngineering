@@ -10,6 +10,7 @@ private:
 	float m_Mass;
 	float m_CoefFrict;
 
+	int m_Kind;
 public:
 	Object();
 	~Object();
@@ -34,6 +35,9 @@ public:
 
 	void GetCoefFrict(float *x);
 	void SetCoefFrict(float x);
+	
+	void SetKind(int Kind);
+	void GetKind(int *Kind);
 
 	void Update(float eTime);
 

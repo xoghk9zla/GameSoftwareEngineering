@@ -97,6 +97,16 @@ void Object::SetCoefFrict(float x)
 	m_CoefFrict = x;
 }
 
+void Object::SetKind(int Kind)
+{
+	m_Kind = Kind;
+}
+
+void Object::GetKind(int *Kind)
+{
+	*Kind = m_Kind;
+}
+
 void Object::Update(float eTime)
 {
 	float magvel = sqrtf(m_VelX * m_VelX + m_VelY * m_VelY);
