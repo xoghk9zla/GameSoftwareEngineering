@@ -1,10 +1,8 @@
-﻿  Object.cpp
-  ScnMgr.cpp
-c:\users\kimtaehwa\desktop\github\gamesoftwareengineering\simplegame\simplegame\scnmgr.cpp(114): warning C4101: 'pY' :참조되지 않은 지역 변수입니다.
-c:\users\kimtaehwa\desktop\github\gamesoftwareengineering\simplegame\simplegame\scnmgr.cpp(114): warning C4101: 'pX' :참조되지 않은 지역 변수입니다.
-c:\users\kimtaehwa\desktop\github\gamesoftwareengineering\simplegame\simplegame\scnmgr.cpp(116): warning C4101: 'vY' :참조되지 않은 지역 변수입니다.
-c:\users\kimtaehwa\desktop\github\gamesoftwareengineering\simplegame\simplegame\scnmgr.cpp(114): warning C4101: 'pZ' :참조되지 않은 지역 변수입니다.
-c:\users\kimtaehwa\desktop\github\gamesoftwareengineering\simplegame\simplegame\scnmgr.cpp(116): warning C4101: 'vX' :참조되지 않은 지역 변수입니다.
-  SimpleGame.cpp
-  코드를 생성하고 있습니다...
+﻿  ScnMgr.cpp
+c:\users\kimtaehwa\desktop\github\gamesoftwareengineering\simplegame\simplegame\scnmgr.cpp(44): warning C4154: 배열 식을 삭제했습니다. 포인터로 변환이 제공됩니다.
+c:\users\kimtaehwa\desktop\github\gamesoftwareengineering\simplegame\simplegame\scnmgr.cpp(65): warning C4101: 'newY' :참조되지 않은 지역 변수입니다.
+c:\users\kimtaehwa\desktop\github\gamesoftwareengineering\simplegame\simplegame\scnmgr.cpp(65): warning C4101: 'newZ' :참조되지 않은 지역 변수입니다.
+c:\users\kimtaehwa\desktop\github\gamesoftwareengineering\simplegame\simplegame\scnmgr.cpp(65): warning C4101: 'newX' :참조되지 않은 지역 변수입니다.
+c:\users\kimtaehwa\desktop\github\gamesoftwareengineering\simplegame\simplegame\scnmgr.cpp(193): warning C4101: 'vY' :참조되지 않은 지역 변수입니다.
+c:\users\kimtaehwa\desktop\github\gamesoftwareengineering\simplegame\simplegame\scnmgr.cpp(193): warning C4101: 'vX' :참조되지 않은 지역 변수입니다.
   SimpleGame.vcxproj -> C:\Users\KimTaeHwa\Desktop\Github\GameSoftwareEngineering\SimpleGame\x64\Debug\SimpleGame.exe

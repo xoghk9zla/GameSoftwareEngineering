@@ -20,7 +20,10 @@ public:
 	void Update(float eTime);
 	void ApplyForce(float x, float y, float eTime);
 
-	void AddObject(float pX, float pY, float pZ, float sX, float sY, float sZ);
+	void AddObject(float x, float y, float z, float sx, float sy, float vx, float vy);
+	void DeleteObject(int id);
+
+	int FindEmptyObjectSlot();
 
 	void Shoot(int shootID);
 };
