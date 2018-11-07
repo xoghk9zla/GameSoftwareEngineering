@@ -30,6 +30,9 @@ ScnMgr::ScnMgr()
 	m_Objects[HERO_ID]->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 	m_Objects[HERO_ID]->SetKind(KIND_HERO);
 
+	// Test AddObject
+	AddObject(1.0f, 0.0f, 0.0f, 1.3f, 1.3f, 0.0f, 0.0f);
+
 	
 }
 	
@@ -60,7 +63,6 @@ void ScnMgr::RenderScene()
 			m_Objects[i]->GetPos(&x, &y, &z);
 			m_Objects[i]->GetSize(&sizeX, &sizeY);
 			m_Objects[i]->GetColor(&r, &g, &b, &a);
-			//m_Renderer->DrawTextureRectHeight(x, y, 0.0f, sizeX * 100, sizeY * 100, r, g, b, a, m_TestTexture, z);
 
 			float newX, newY, newZ, newW, newH;
 
@@ -79,18 +81,6 @@ void ScnMgr::RenderScene()
 				r, g, b, a,
 				m_TexSeq, z
 			);
-
-			/*int seqX, seqY;
-
-			seqX = g_Seq % 4;
-			seqY = (int)g_Seq / 2;
-			g_Seq++;
-
-			if (g_Seq > 7) {
-				g_Seq = 0;
-			}
-			m_Renderer->DrawTextureRectSeqXY(x, y, 0.0f, sizeX * 100, sizeY * 100, r, g, b, a, m_TexSeq, seqX, seqY, 4, 2);
-			*/
 		}
 	}
 }
@@ -106,11 +96,10 @@ void ScnMgr::Update(float eTime)
 
 void ScnMgr::ApplyForce(float x, float y, float eTime)
 {
-	for (int i = 0; i < MAX_OBJECTS; ++i) {
-		if (m_Objects[i] != NULL) {
-			m_Objects[i]->ApplyForce(x, y, eTime);
+		if (m_Objects[HERO_ID] != NULL) {
+			m_Objects[HERO_ID]->ApplyForce(x, y, eTime);
 		}
-	}
+	
 }
 
 void ScnMgr::AddObject(float x, float y, float z, float sx, float sy, float vx, float vy)
@@ -144,7 +133,7 @@ void ScnMgr::DeleteObject(int id)
 int ScnMgr::FindEmptyObjectSlot()
 {
 	for (int i = 0; i < MAX_OBJECTS; ++i) {
-		if (m_Objects[i] = NULL) {
+		if (m_Objects[i] == NULL) {
 			return i;
 		}
 	}
