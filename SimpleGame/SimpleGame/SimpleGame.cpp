@@ -32,7 +32,7 @@ int g_Shoot = SHOOT_NONE;
 void RenderScene(void){
 
 	// 키입력 테스트
-	std::cout << "w: " << g_KeyW << ", a: " << g_KeyA << ", s: " << g_KeyS << ", d: " << g_KeyD << std::endl;
+	// std::cout << "w: " << g_KeyW << ", a: " << g_KeyA << ", s: " << g_KeyS << ", d: " << g_KeyD << std::endl;
 
 	// Calc Elapsed Time
 	if (g_PrevTime == 0) {
@@ -43,9 +43,9 @@ void RenderScene(void){
 	DWORD ElapsedTime = CurTime - g_PrevTime;
 	g_PrevTime = CurTime;
 	float eTime = (float)ElapsedTime / 1000.0f;
-	if (eTime <= 0) {
+	/*if (eTime <= 0) {
 		eTime = 0.015f;
-	}
+	}*/
 	 //std::cout << eTime << std::endl;
 	
 	// Apply Force
@@ -160,7 +160,7 @@ int main(int argc, char **argv){
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(0, 0);
-	glutInitWindowSize(WIDTH, HEIGHT);
+	glutInitWindowSize(500, 500);
 
 	glutCreateWindow("Game Software Engineering KPU");
 
@@ -172,6 +172,8 @@ int main(int argc, char **argv){
 	else{
 		std::cout << "GLEW 3.0 not supported\n ";
 	}
+
+	g_PrevTime = GetTickCount();
 
 	glutDisplayFunc(RenderScene);
 	glutIdleFunc(Idle);

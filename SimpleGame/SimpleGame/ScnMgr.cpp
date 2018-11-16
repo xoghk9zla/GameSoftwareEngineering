@@ -13,7 +13,7 @@ ScnMgr::ScnMgr()
 	}
 
 	// Init Renderer
-	m_Renderer = new Renderer(WIDTH, HEIGHT);
+	m_Renderer = new Renderer(500, 500);
 
 	// Load test Texture
 	m_TexSeq = m_Renderer->CreatePngTexture("./textures/texture.png");
@@ -21,17 +21,17 @@ ScnMgr::ScnMgr()
 
 	// Creat Hero Object
 	m_Objects[HERO_ID] = new Object();
-	m_Objects[HERO_ID]->SetPos(0.0f, 0.0f, 0.0f);
+	m_Objects[HERO_ID]->SetPos(0.0f, 0.0f, 0.5f);
 	m_Objects[HERO_ID]->SetVel(0.0f, 0.0f);
 	m_Objects[HERO_ID]->SetAcc(0.0f, 0.0f);
 	m_Objects[HERO_ID]->SetSize(1.0f, 1.0f);
-	m_Objects[HERO_ID]->SetMass(0.1f);
-	m_Objects[HERO_ID]->SetCoefFrict(1.0f);
+	m_Objects[HERO_ID]->SetMass(0.15f);
+	m_Objects[HERO_ID]->SetCoefFrict(0.5f);
 	m_Objects[HERO_ID]->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 	m_Objects[HERO_ID]->SetKind(KIND_HERO);
 
 	// Test AddObject
-	AddObject(1.0f, 0.0f, 1.0f, 1.3f, 1.3f, 0.0f, 0.0f);
+	AddObject(1.5f, 0.0f, 1.0f, 1.3f, 1.3f, 0.0f, 0.0f);
 
 	
 }
@@ -65,18 +65,16 @@ void ScnMgr::RenderScene()
 			m_Objects[i]->GetColor(&r, &g, &b, &a);
 
 			float newX, newY, newZ, newW, newH;
-
-			/*
+			
 			newX = x * 100;
 			newY = y * 100;
 			newZ = z * 100;
-			*/
 
 			newW = sizeX * 100;
 			newH = sizeY * 100;
 
 			m_Renderer->DrawTextureRectHeight(
-				x, y, 0.0f,
+				newX, newY, 0.0f,
 				newW, newH,
 				r, g, b, a,
 				m_TexSeq, z
@@ -100,7 +98,7 @@ void ScnMgr::GarbageCollector()
 		if (m_Objects[i] != NULL) {
 			float x, y, z;
 			m_Objects[i]->GetPos(&x, &y, &z);
-			if (x > 250.0f || x < -250.0f || y > 250.0f || y < -250.0f) {
+			if (x > 2.5f || x < -2.5f || y > 2.5f || y < -2.5f) {
 				DeleteObject(i);
 			}
 		}
@@ -130,8 +128,8 @@ void ScnMgr::AddObject(float x, float y, float z, float sx, float sy, float vx, 
 	m_Objects[id]->SetVel(vx, vy);
 	m_Objects[id]->SetAcc(0.0f, 0.0f);
 	m_Objects[id]->SetSize(sx, sy);
-	m_Objects[id]->SetMass(0.1f);
-	m_Objects[id]->SetCoefFrict(0.0f);
+	m_Objects[id]->SetMass(0.15f);
+	m_Objects[id]->SetCoefFrict(0.5f);
 	m_Objects[id]->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 	m_Objects[id]->SetKind(KIND_BULLET);
 }
@@ -161,7 +159,7 @@ void ScnMgr::Shoot(int shootID)
 		return;
 	}
 
-	float amount = 30.0f;
+	float amount = 20.0f;
 	float bvX, bvY;
 
 	bvX = 0.0f;
@@ -204,6 +202,7 @@ void ScnMgr::Shoot(int shootID)
 
 void ScnMgr::DoCollisionTest()
 {
+
 	for (int i = 0; i < MAX_OBJECTS; ++i) {
 
 		if (m_Objects[i] == NULL) {
@@ -223,9 +222,11 @@ void ScnMgr::DoCollisionTest()
 			float pX, pY, pZ;
 			float sX, sY;
 			float minX, minY, maxX, maxY;
+			int kind;
 
 			m_Objects[i]->GetPos(&pX, &pY, &pZ);
 			m_Objects[i]->GetSize(&sX, &sY);
+			m_Objects[i]->GetKind(&kind);
 			minX = pX - sX / 2.f;
 			maxX = pX + sX / 2.f;
 			minY = pY - sY / 2.f;
@@ -235,9 +236,11 @@ void ScnMgr::DoCollisionTest()
 			float pX1, pY1, pZ1;
 			float sX1, sY1;
 			float minX1, minY1, maxX1, maxY1;
+			int kind1;
 
 			m_Objects[j]->GetPos(&pX1, &pY1, &pZ1);
 			m_Objects[j]->GetSize(&sX1, &sY1);
+			m_Objects[j]->GetKind(&kind1);
 			minX1 = pX1 - sX1 / 2.f;
 			maxX1 = pX1 + sX1 / 2.f;
 			minY1 = pY1 - sY1 / 2.f;
@@ -252,14 +255,10 @@ void ScnMgr::DoCollisionTest()
 
 bool ScnMgr::RRCollision(float minX, float minY, float maxX, float maxY, float minX1, float minY1, float maxX1, float maxY1)
 {
-	if (maxX < minX1)
-		return false;
-	if (maxX1 < minX)
-		return false;
-	if (maxY < minY1)
-		return false;
-	if (maxY1 < minY)
-		return false;
+	if (maxX < minX1) return false;
+	if (maxX1 < minX) return false;
+	if (maxY < minY1) return false;
+	if (maxY1 < minY) return false;
 
 	return true;
 }
