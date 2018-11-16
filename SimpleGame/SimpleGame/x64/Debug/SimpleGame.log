@@ -3,6 +3,4 @@ c:\users\kimtaehwa\desktop\github\gamesoftwareengineering\simplegame\simplegame\
 c:\users\kimtaehwa\desktop\github\gamesoftwareengineering\simplegame\simplegame\scnmgr.cpp(67): warning C4101: 'newY' :참조되지 않은 지역 변수입니다.
 c:\users\kimtaehwa\desktop\github\gamesoftwareengineering\simplegame\simplegame\scnmgr.cpp(67): warning C4101: 'newZ' :참조되지 않은 지역 변수입니다.
 c:\users\kimtaehwa\desktop\github\gamesoftwareengineering\simplegame\simplegame\scnmgr.cpp(67): warning C4101: 'newX' :참조되지 않은 지역 변수입니다.
-c:\users\kimtaehwa\desktop\github\gamesoftwareengineering\simplegame\simplegame\scnmgr.cpp(182): warning C4101: 'vY' :참조되지 않은 지역 변수입니다.
-c:\users\kimtaehwa\desktop\github\gamesoftwareengineering\simplegame\simplegame\scnmgr.cpp(182): warning C4101: 'vX' :참조되지 않은 지역 변수입니다.
   SimpleGame.vcxproj -> C:\Users\KimTaeHwa\Desktop\Github\GameSoftwareEngineering\SimpleGame\x64\Debug\SimpleGame.exe

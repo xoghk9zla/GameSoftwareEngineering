@@ -31,7 +31,7 @@ ScnMgr::ScnMgr()
 	m_Objects[HERO_ID]->SetKind(KIND_HERO);
 
 	// Test AddObject
-	AddObject(1.0f, 0.0f, 0.0f, 1.3f, 1.3f, 0.0f, 0.0f);
+	AddObject(1.0f, 0.0f, 1.0f, 1.3f, 1.3f, 0.0f, 0.0f);
 
 	
 }
@@ -94,6 +94,20 @@ void ScnMgr::Update(float eTime)
 	}
 }
 
+void ScnMgr::GarbageCollector()
+{
+	for (int i = 0; i < MAX_OBJECTS; ++i) {
+		if (m_Objects[i] != NULL) {
+			float x, y, z;
+			m_Objects[i]->GetPos(&x, &y, &z);
+			if (x > 250.0f || x < -250.0f || y > 250.0f || y < -250.0f) {
+				DeleteObject(i);
+			}
+		}
+	}
+}
+
+
 void ScnMgr::ApplyForce(float x, float y, float eTime)
 {
 		if (m_Objects[HERO_ID] != NULL) {
@@ -117,7 +131,7 @@ void ScnMgr::AddObject(float x, float y, float z, float sx, float sy, float vx, 
 	m_Objects[id]->SetAcc(0.0f, 0.0f);
 	m_Objects[id]->SetSize(sx, sy);
 	m_Objects[id]->SetMass(0.1f);
-	m_Objects[id]->SetCoefFrict(1.0f);
+	m_Objects[id]->SetCoefFrict(0.0f);
 	m_Objects[id]->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 	m_Objects[id]->SetKind(KIND_BULLET);
 }
@@ -147,7 +161,7 @@ void ScnMgr::Shoot(int shootID)
 		return;
 	}
 
-	float amount = 3.0f;
+	float amount = 30.0f;
 	float bvX, bvY;
 
 	bvX = 0.0f;
@@ -180,5 +194,72 @@ void ScnMgr::Shoot(int shootID)
 	m_Objects[HERO_ID]->GetPos(&pX, &pY, &pZ);
 
 	float vX, vY;
+	m_Objects[HERO_ID]->GetVel(&vX, &vY);
 
+	bvX = bvX + vX;
+	bvY = bvY + vY;
+
+	AddObject(pX, pY, pZ, 0.2f, 0.2f, bvX, bvY);
+}
+
+void ScnMgr::DoCollisionTest()
+{
+	for (int i = 0; i < MAX_OBJECTS; ++i) {
+
+		if (m_Objects[i] == NULL) {
+			continue;
+		}
+
+		for (int j = 0; j < MAX_OBJECTS; ++j) {
+
+			if (m_Objects[j] == NULL) {
+				continue;
+			}
+			if (i == j) {
+				continue;
+			}
+
+			// i object
+			float pX, pY, pZ;
+			float sX, sY;
+			float minX, minY, maxX, maxY;
+
+			m_Objects[i]->GetPos(&pX, &pY, &pZ);
+			m_Objects[i]->GetSize(&sX, &sY);
+			minX = pX - sX / 2.f;
+			maxX = pX + sX / 2.f;
+			minY = pY - sY / 2.f;
+			maxY = pY + sY / 2.f;
+
+			// j object
+			float pX1, pY1, pZ1;
+			float sX1, sY1;
+			float minX1, minY1, maxX1, maxY1;
+
+			m_Objects[j]->GetPos(&pX1, &pY1, &pZ1);
+			m_Objects[j]->GetSize(&sX1, &sY1);
+			minX1 = pX1 - sX1 / 2.f;
+			maxX1 = pX1 + sX1 / 2.f;
+			minY1 = pY1 - sY1 / 2.f;
+			maxY1 = pY1 + sY1 / 2.f;
+
+			if (RRCollision(minX, minY, maxX, maxY, minX1, minY1, maxX1, maxY1)) {
+				std::cout << "Collision" << std::endl;
+			}
+		}
+	}
+}
+
+bool ScnMgr::RRCollision(float minX, float minY, float maxX, float maxY, float minX1, float minY1, float maxX1, float maxY1)
+{
+	if (maxX < minX1)
+		return false;
+	if (maxX1 < minX)
+		return false;
+	if (maxY < minY1)
+		return false;
+	if (maxY1 < minY)
+		return false;
+
+	return true;
 }

@@ -18,6 +18,7 @@ public:
 	
 	void RenderScene();
 	void Update(float eTime);
+	void GarbageCollector();
 	void ApplyForce(float x, float y, float eTime);
 
 	void AddObject(float x, float y, float z, float sx, float sy, float vx, float vy);
@@ -26,5 +27,9 @@ public:
 	int FindEmptyObjectSlot();
 
 	void Shoot(int shootID);
+
+	void DoCollisionTest();
+	bool RRCollision(float minX, float minY, float maxX, float maxY, float minX1, float minY1, float maxX1, float maxY1);
+
 };
 

@@ -74,7 +74,13 @@ void RenderScene(void){
 	// Render
 	g_ScnMgr->RenderScene();
 
+	// Shoot
 	g_ScnMgr->Shoot(g_Shoot);
+
+	// 화면 밖으로 나가는 오브젝트 삭제
+	g_ScnMgr->GarbageCollector();
+
+	g_ScnMgr->DoCollisionTest();
 
 	glutSwapBuffers();
 }
